@@ -1,0 +1,26 @@
+VELO WEBSITE — ENKEL STARTGUIDE
+
+Dette er en ferdig førsteversjon av nettsiden. Den er ikke publisert på internett ennå.
+
+SE NETTSIDEN PÅ DIN EGEN PC
+1. Åpne index.html med et dobbeltklikk.
+2. Trykk på Download Velo for å kontrollere nedlastingsknappen.
+
+SLIK LEGGER DU DEN PÅ WEBHOTELLET
+1. Logg inn på webhotellet ditt og åpne filbehandleren.
+2. Finn nettsidens offentlige mappe. Den heter ofte public_html eller www.
+3. Last opp index.html, favicon.ico og hele downloads-mappen dit.
+4. Behold mappestrukturen: downloads/Velo.exe må ligge under index.html.
+5. Åpne domenet ditt i et privat nettleservindu og prøv Download Velo.
+
+DU TRENGER ET DOMENE OG WEBHOTELL
+Et domene er adressen, for eksempel example.com. Webhotellet lagrer nettsidefilene.
+Hvis du ikke har webhotell ennå, velger vi det sammen før du kjøper noe.
+
+FILER I DENNE MAPPEN
+- index.html: selve nettsiden
+- favicon.ico: Velo-ikonet i nettleserfanen
+- downloads/Velo.exe: filen brukerne laster ned
+- SHA256.txt: kontrollsum for å sjekke at EXE-filen er hel
+
+Ikke endre navn på Velo.exe uten å oppdatere nedlastingslenken i index.html.

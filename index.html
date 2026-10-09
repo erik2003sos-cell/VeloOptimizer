@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090b">
+  <meta name="description" content="Velo is a clear, local-first Windows tuning app for PC gamers. Choose the settings you want and review changes before applying them.">
+  <title>Velo — PC tuning, with control</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08090b;
+      --surface: #101216;
+      --surface-2: #15181e;
+      --line: #272b33;
+      --text: #f4f5f7;
+      --muted: #9ca3af;
+      --blue: #8ba9ff;
+      --green: #92e3bb;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 78% 12%, rgba(80, 107, 166, .13), transparent 35%), var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+    .topbar { height: 76px; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .topbar-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; font-size: 15px; font-weight: 760; letter-spacing: .19em; }
+    .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; background: #050607; border: 1px solid #353941; border-radius: 9px; box-shadow: 0 5px 20px #0008; }
+    .brand-mark svg { width: 17px; height: 21px; }
+    nav { display: flex; align-items: center; gap: 30px; color: var(--muted); font-size: 13px; }
+    nav a { text-decoration: none; transition: color .18s ease; }
+    nav a:hover { color: var(--text); }
+    nav .nav-download { color: var(--text); border: 1px solid #3a3e47; border-radius: 8px; padding: 10px 14px; }
+    .hero { padding: 90px 0 74px; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 52px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #c1c8d4; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 15px #92e3bb66; }
+    h1 { max-width: 620px; margin: 22px 0 18px; font-size: clamp(43px, 6.2vw, 70px); line-height: .99; letter-spacing: -.065em; font-weight: 660; }
+    .hero-copy { max-width: 550px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 18px; border-radius: 9px; text-decoration: none; font-size: 13px; font-weight: 700; transition: transform .16s ease, background .16s ease, border-color .16s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { background: #f4f5f7; color: #090a0c; }
+    .button-primary:hover { background: #fff; }
+    .button-secondary { background: rgba(255,255,255,.025); border: 1px solid #353943; color: var(--text); }
+    .button-secondary:hover { border-color: #606775; }
+    .download-meta { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 17px; color: #7f8794; font-size: 11px; }
+    .download-meta span::before { content: "✓"; color: var(--green); margin-right: 7px; }
+    .product-card { position: relative; padding: 1px; border-radius: 18px; background: linear-gradient(145deg, #555d6c88, #252a34 45%, #171a20); box-shadow: 0 26px 90px #0008; }
+    .product-inner { min-height: 364px; padding: 25px; border-radius: 17px; background: linear-gradient(145deg, #12151a, #0d0f13); }
+    .window-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 21px; border-bottom: 1px solid var(--line); }
+    .window-brand { display: flex; align-items: center; gap: 9px; color: #e8ebf0; font-size: 11px; letter-spacing: .12em; font-weight: 750; }
+    .mini-mark { width: 22px; height: 22px; display: grid; place-items: center; background: #050607; border: 1px solid #363a42; border-radius: 6px; }
+    .mini-mark svg { width: 11px; height: 15px; }
+    .online { display: flex; align-items: center; gap: 7px; color: #9299a5; font-size: 10px; }
+    .online::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .window-title { margin: 24px 0 5px; font-size: 18px; font-weight: 640; letter-spacing: -.025em; }
+    .window-sub { margin: 0 0 20px; color: var(--muted); font-size: 11px; }
+    .opt-row { display: flex; align-items: center; gap: 13px; padding: 13px 0; border-top: 1px solid rgba(255,255,255,.055); }
+    .opt-icon { flex: 0 0 31px; width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid #30343d; border-radius: 8px; color: #d8dde6; font-size: 13px; }
+    .opt-copy { min-width: 0; flex: 1; }
+    .opt-copy strong { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 650; }
+    .opt-copy small { color: #89919e; font-size: 9px; line-height: 1.4; }
+    .tag { padding: 5px 7px; border: 1px solid #343944; border-radius: 5px; color: #b7c0ce; font-size: 8px; font-weight: 750; letter-spacing: .06em; }
+    .tag.auto { color: var(--green); border-color: #355643; }
+    .switch { width: 31px; height: 18px; position: relative; border-radius: 20px; background: #edf0f5; }
+    .switch::after { content: ""; position: absolute; width: 12px; height: 12px; right: 3px; top: 3px; border-radius: 50%; background: #111317; }
+    .panel-foot { display: flex; justify-content: space-between; gap: 15px; margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); color: #89919e; font-size: 9px; }
+    .panel-foot b { color: #d8dde6; font-weight: 600; }
+    .trust-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .trust-items { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .trust-item { padding: 23px 18px; border-right: 1px solid var(--line); color: #c4c9d2; font-size: 11px; text-align: center; }
+    .trust-item:first-child { border-left: 1px solid var(--line); }
+    .section { padding: 92px 0; }
+    .section-head { max-width: 650px; margin-bottom: 34px; }
+    .section-label { color: var(--blue); font-size: 10px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h2 { margin: 13px 0 12px; font-size: clamp(30px, 4vw, 43px); font-weight: 620; letter-spacing: -.05em; }
+    .section-head p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .feature { min-height: 194px; padding: 24px; border: 1px solid var(--line); border-radius: 13px; background: linear-gradient(145deg, #111318, #0c0e12); }
+    .feature-symbol { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #353a45; border-radius: 9px; color: var(--blue); font-size: 15px; }
+    .feature h3 { margin: 22px 0 9px; font-size: 15px; font-weight: 650; }
+    .feature p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .how { background: #0d0f12; border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: step; }
+    .step { padding-top: 18px; border-top: 1px solid #444a56; counter-increment: step; }
+    .step::before { content: "0" counter(step); color: var(--blue); font-size: 11px; letter-spacing: .12em; }
+    .step h3 { margin: 16px 0 8px; font-size: 15px; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .download-section { padding: 86px 0 96px; }
+    .download-box { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 34px; border: 1px solid #363b46; border-radius: 16px; background: radial-gradient(ellipse at 75% 50%, #27324766, transparent 42%), #101216; }
+    .download-box h2 { margin: 0 0 8px; font-size: 30px; }
+    .download-box p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .notice { margin-top: 18px; padding: 15px 17px; border: 1px solid #393943; border-radius: 9px; background: #111216; color: #969daa; font-size: 11px; line-height: 1.65; }
+    .notice strong { color: #cbd1db; }
+    footer { padding: 25px 0; border-top: 1px solid var(--line); color: #78808d; font-size: 10px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+    .footer-brand { color: #cbd0d9; letter-spacing: .16em; font-weight: 750; }
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; gap: 38px; padding-top: 66px; }
+      .product-card { max-width: 620px; }
+      .trust-items { grid-template-columns: repeat(2, 1fr); }
+      .trust-item:nth-child(3) { border-left: 1px solid var(--line); }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 32px, var(--max)); }
+      .topbar { height: 64px; }
+      nav { gap: 15px; font-size: 11px; }
+      nav a:not(.nav-download) { display: none; }
+      h1 { font-size: 47px; }
+      .hero { padding: 57px 0; }
+      .product-inner { padding: 18px; min-height: unset; }
+      .tag { display: none; }
+      .trust-item { padding: 18px 8px; font-size: 10px; }
+      .section { padding: 68px 0; }
+      .steps { grid-template-columns: 1fr; gap: 25px; }
+      .download-box { flex-direction: column; align-items: flex-start; padding: 25px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top" aria-label="Velo home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 20 26" fill="none"><path d="M11.7 1.5 3 14h5l-.2 10.5L17 10h-5.4l.1-8.5Z" fill="white"/></svg></span>
+        VELO
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a class="nav-download" href="downloads/Velo.exe" download>Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero">
+      <div>
+        <div class="eyebrow">A clear tune-up for Windows gamers</div>
+        <h1>Your PC.<br>On your terms.</h1>
+        <p class="hero-copy">Velo gives you a cleaner way to review gaming and Windows tune-ups. Scan your hardware, choose the changes you want, and see what each one does before you apply it.</p>
+        <div class="actions">
+          <a class="button button-primary" href="downloads/Velo.exe" download>Download Velo <span aria-hidden="true">↓</span></a>
+          <a class="button button-secondary" href="#features">Explore features <span aria-hidden="true">↘</span></a>
+        </div>
+        <div class="download-meta"><span>Windows 10 / 11</span><span>64-bit</span><span>About 52 MB</span></div>
+      </div>
+
+      <div class="product-card" aria-label="Preview of Velo's optimization library">
+        <div class="product-inner">
+          <div class="window-top">
+            <div class="window-brand"><span class="mini-mark" aria-hidden="true"><svg viewBox="0 0 20 26" fill="none"><path d="M11.7 1.5 3 14h5l-.2 10.5L17 10h-5.4l.1-8.5Z" fill="white"/></svg></span> VELO <span style="color:#737b88;font-weight:500;letter-spacing:0">/ OPTIMIZATION LIBRARY</span></div>
+            <span class="online">LOCAL APP</span>
+          </div>
+          <h2 class="window-title">Choose your tune-up.</h2>
+          <p class="window-sub">70+ options, with clear labels for automatic and guided steps.</p>
+          <div class="opt-row">
+            <span class="opt-icon">ϟ</span><span class="opt-copy"><strong>Enable Windows Game Mode</strong><small>Reversible Windows setting</small></span><span class="tag auto">AUTO</span><span class="switch" aria-hidden="true"></span>
+          </div>
+          <div class="opt-row">
+            <span class="opt-icon">⌖</span><span class="opt-copy"><strong>Choose a stable FPS cap</strong><small>Compare frame pacing in your game</small></span><span class="tag">GUIDED</span><span class="switch" aria-hidden="true"></span>
+          </div>
+          <div class="opt-row">
+            <span class="opt-icon">↗</span><span class="opt-copy"><strong>Review before applying</strong><small>See what Velo will change</small></span><span class="tag auto">READY</span><span class="switch" aria-hidden="true"></span>
+          </div>
+          <div class="panel-foot"><span><b>Local hardware scan</b></span><span>Changes stay in your hands</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Velo principles">
+      <div class="wrap trust-items">
+        <div class="trust-item">70+ selectable tune-ups</div>
+        <div class="trust-item">Automatic and guided options</div>
+        <div class="trust-item">Saved restore data for managed changes</div>
+        <div class="trust-item">No overclocking or driver bundles</div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="features">
+      <div class="section-head">
+        <div class="section-label">Built for clarity</div>
+        <h2>Know what each switch means.</h2>
+        <p>Velo is designed to help you make informed changes, not promise magic FPS gains. It shows the trade-offs and keeps manual steps separate from settings it can apply.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature"><span class="feature-symbol">✦</span><h3>Pick what matters to you</h3><p>Search the library or filter by FPS, input, network, Windows, power, storage, display and game setup.</p></article>
+        <article class="feature"><span class="feature-symbol">◉</span><h3>Clear before you apply</h3><p>Review selected changes first. Automatic settings are marked AUTO; hands-on advice is marked GUIDED.</p></article>
+          <article class="feature"><span class="feature-symbol">↶</span><h3>Undo managed changes</h3><p>Velo saves the original values for Windows settings it manages, so you can return to those saved values.</p></article>
+      </div>
+    </section>
+
+    <section class="how" id="how-it-works">
+      <div class="wrap section">
+        <div class="section-head">
+          <div class="section-label">Simple by design</div>
+          <h2>Scan. Choose. Review.</h2>
+          <p>Start with your own PC, then decide which recommendations fit your setup.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><h3>Scan this PC</h3><p>Velo reads hardware details locally using Windows inventory tools.</p></article>
+          <article class="step"><h3>Choose your options</h3><p>Toggle individual items, use a recommendation preset, or filter to the type you want.</p></article>
+          <article class="step"><h3>Review and apply</h3><p>Confirm supported Windows changes. Guided items show you the steps to do yourself.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap download-section" id="download">
+      <div class="download-box">
+        <div><div class="section-label">Ready when you are</div><h2>Get Velo for Windows.</h2><p>Self-contained 64-bit app for Windows 10 and 11. No separate .NET installation needed.</p></div>
+        <a class="button button-primary" href="downloads/Velo.exe" download>Download Velo.exe <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="notice"><strong>Windows security note:</strong> This build is not code-signed, so Windows may show a SmartScreen reputation warning. Only download Velo from a site you trust. Velo cannot guarantee higher FPS or lower game-server ping; results depend on the game and PC.</div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span class="footer-brand">VELO</span><span>PC tuning with clear choices. © <span id="year">2026</span> Velo.</span></div></footer>
+</body>
+</html>
